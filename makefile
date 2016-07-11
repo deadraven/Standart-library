@@ -1,13 +1,21 @@
+#	$<	the name of the prerequisite
+#	$@	the name of the target
 CC=g++
-CFLAGS=-c -Wall
+CFLAGS= -Wall -g -c -std=c++11
+LFLAGS= -Wall -g
+MODULES= memory
+INCLUDE = $(addprefix ./, $(MODULES))
+OBJECTS=$(wildcard ./objects/*.o)
 
-all: main
+.PHNOY : link
+link : compile
+	$(CC) $(LFLAGS) $(OBJECTS) -o main
 
-main: main.o
-	$(CC) main.o -o main
+.PHNOY : compile
+compile : $(OBJECTS)
 
-main.o: main.cpp
-	$(CC) $(CFLAGS) main.cpp
+objects/main.o: main.cpp memory/memory.h
+	$(CC) $(CFLAGS) main.cpp -I $(INCLUDE) -o $@
 
-clean:
-	rm *.o main
+objects/test.o : test/test.cpp
+	$(CC) $(CFLAGS) $< -o $@
