@@ -14,7 +14,7 @@ link : compile
 .PHNOY : compile
 compile : $(OBJECTS)
 
-objects/main.o: main.cpp container-sequential/memory.h
+objects/main.o: main.cpp container-sequential/memory.hpp
 	$(CC) $(CFLAGS) main.cpp -I $(INCLUDE) -o $@
 
 objects/test.o : test/test.cpp
