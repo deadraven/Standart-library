@@ -1,9 +1,9 @@
 CC=g++
 CFLAGS=-Wall -g -c -std=c++11
 LFLAGS=-Wall -g
-MODULES=memory
 INCLUDE=./container-sequential
-OBJECTS=$(wildcard ./objects/*.o)
+MODULES=main
+OBJECTS=$(addprefix ./objects/, $(addsuffix .o,$(MODULES)))
 #	$<	the name of the prerequisite
 #	$@	the name of the target
 
@@ -14,8 +14,8 @@ link : compile
 .PHNOY : compile
 compile : $(OBJECTS)
 
-objects/main.o: main.cpp container-sequential/memory.hpp
+objects/main.o: main.cpp container-sequential/array.hpp
 	$(CC) $(CFLAGS) main.cpp -I $(INCLUDE) -o $@
 
-objects/test.o : test/test.cpp
+objects/test.o : array.cpp
 	$(CC) $(CFLAGS) $< -o $@
