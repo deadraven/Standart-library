@@ -2,7 +2,8 @@
 #define __Standart_Library__memory__
 
 #include <algorithm>
-#include <initializer_list>
+#include <iterator>
+//#include <initializer_list>
 #include <sstream>
 
 template <typename T> class memory {
@@ -24,24 +25,28 @@ template <typename T> class memory {
 				reference	operator*()											{ return *_current; };
 				bool		operator==(const iterator& b) const					{ return _current == b._current; };
 				bool		operator!=(const iterator& b) const					{ return _current != b._current; };
+				friend std::ostream& operator<<( std::ostream& out, const iterator& source ) {
+					out << "iterator(" << source._current << "|" << *(source._current) << ")";
+					return out;
+				};
 			private:
 				pointer		_current;
 		};
 
 		//Constructors
 		memory(size_type n=0)
-			:	_data{ n>0 ? new T[n] : nullptr },
-				_size{ n>0 ? n : 0 }
+			: _data{ n>0 ? new T[n] : nullptr },
+			  _size{ n>0 ? n : 0 }
 			{};
 		memory(const container& source)
-			:	memory(source._size)
+			: memory(source._size)
 			{ std::copy( source.begin(), source.end(), iterator {_data}); };
 		memory(container&& source) noexcept
-			:	memory()
+			: memory()
 			{ swap(source); };
-		memory(std::initializer_list<T> source) //remove constructor from initializer list
-			: memory(source.size())
-			{ std::move( source.begin(), source.end(), iterator{_data}); };
+//		memory(std::initializer_list<T> source) //remove constructor from initializer list
+//			: memory(source.size())
+//			{ std::move( source.begin(), source.end(), iterator{_data}); };
 		memory(iterator begin, iterator end)
 			: memory( std::distance( begin, end))
 			{ std::copy( begin, end, iterator {_data}); }
